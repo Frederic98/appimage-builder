@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Install dependencies
         run: |
@@ -34,7 +34,7 @@ jobs:
           name: appimage-builder
           path: 'recipes/appimage-builder/appimage-builder*.AppImage*'
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: build
     steps:
       - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
           name: bash
           path: 'recipes/bash/*.AppImage*'
   publish-appimage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04-arm
     needs: test
     steps:
       - name: Download AppImage from build job
@@ -74,7 +74,7 @@ jobs:
           prerelease: false
           files: 'appimage-builder*.AppImage*'
   publish-python-wheel:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: test
     steps:
       - uses: actions/checkout@v2
