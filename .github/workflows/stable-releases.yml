@@ -29,7 +29,7 @@ jobs:
           export APPIMAGE_BUILDER_VERSION=$(appimage-builder --version | head -1 | cut -f 2 -d" ")
           appimage-builder --skip-test
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2.1.4
+        uses: actions/upload-artifact@v4
         with:
           name: appimage-builder
           path: 'recipes/appimage-builder/appimage-builder*.AppImage*'
@@ -56,40 +56,40 @@ jobs:
         run: |
           recipes/bash/*.AppImage --appimage-extract-and-run -c "echo Hello World"
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2.1.4
+        uses: actions/upload-artifact@v4
         with:
           name: bash
           path: 'recipes/bash/*.AppImage*'
-  publish-appimage:
-    runs-on: ubuntu-24.04-arm
-    needs: test
-    steps:
-      - name: Download AppImage from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: appimage-builder
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: 'appimage-builder*.AppImage*'
-  publish-python-wheel:
-    runs-on: ubuntu-24.04-arm
-    needs: test
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-      - name: Build and publish
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          python setup.py sdist bdist_wheel
-          twine upload dist/*
+  # publish-appimage:
+  #   runs-on: ubuntu-24.04-arm
+  #   needs: test
+  #   steps:
+  #     - name: Download AppImage from build job
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: appimage-builder
+  #     - uses: "marvinpinto/action-automatic-releases@latest"
+  #       with:
+  #         repo_token: "${{ secrets.GITHUB_TOKEN }}"
+  #         prerelease: false
+  #         files: 'appimage-builder*.AppImage*'
+  # publish-python-wheel:
+  #   runs-on: ubuntu-24.04-arm
+  #   needs: test
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: '3.x'
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install setuptools wheel twine
+  #     - name: Build and publish
+  #       env:
+  #         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+  #         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+  #       run: |
+  #         python setup.py sdist bdist_wheel
+  #         twine upload dist/*
