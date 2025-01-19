@@ -50,8 +50,8 @@ AppDir:
     ln -s bash $TARGET_APPDIR/bin/sh
 
     # install appimage-builder
-    python3.10 -m pip install --ignore-installed --prefix=/usr --root="$TARGET_APPDIR"  install ../../
-    python3.10 -m pip install --ignore-installed --prefix=/usr --root="$TARGET_APPDIR"  install certifi
+    python3 -m pip install --ignore-installed --prefix=/usr --root="$TARGET_APPDIR"  install ../../
+    python3 -m pip install --ignore-installed --prefix=/usr --root="$TARGET_APPDIR"  install certifi
 
   runtime:
     version: "v2.0.0"
